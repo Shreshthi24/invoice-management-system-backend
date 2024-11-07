@@ -13,6 +13,7 @@ import com.invoicems.services.VendorService;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:55952")
 @RequestMapping("/vendors")
 public class VendorController {
 
@@ -51,7 +52,7 @@ public class VendorController {
             return ResponseEntity.ok(updatedVendor);
         } else {
             return ResponseEntity.notFound().build();
-        }
+        } 
     }
 //--------------------------------------------------------------------
     @DeleteMapping("/{companyName}")

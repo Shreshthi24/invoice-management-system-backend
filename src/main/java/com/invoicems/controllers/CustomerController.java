@@ -12,6 +12,7 @@ import com.invoicems.services.CustomerService;
 import com.invoicems.services.EmailService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:55952")
 @RequestMapping("/")
 public class CustomerController {
 
