@@ -106,7 +106,7 @@ public class CustomerController {
 
         Optional<Customer> customer = customerService.findByPasswordResetToken(token);
 
-        if (customer.isPresent()) {
+        if (customer.isPresent()) { 
             customer.get().setPassword(newPassword); // Set new password
             customerService.updateCustomerPassword(customer.get()); // Hash and save the password
             return ResponseEntity.ok("Password successfully reset.");
