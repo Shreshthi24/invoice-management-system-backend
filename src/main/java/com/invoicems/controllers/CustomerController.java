@@ -98,7 +98,7 @@ public class CustomerController {
         }
     }
 
-//--------------------------------Reset password - using token
+//--------------------------------Reset password
     @PostMapping("/resetPassword")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetRequest) {
         String token = resetRequest.get("passwordResetToken");
@@ -107,8 +107,8 @@ public class CustomerController {
         Optional<Customer> customer = customerService.findByPasswordResetToken(token);
 
         if (customer.isPresent()) { 
-            customer.get().setPassword(newPassword); // Set new password
-            customerService.updateCustomerPassword(customer.get()); // Hash and save the password
+            customer.get().setPassword(newPassword); //new pass
+            customerService.updateCustomerPassword(customer.get()); 
             return ResponseEntity.ok("Password successfully reset.");
         } else {
             return ResponseEntity.status(400).body("Invalid or expired reset token.");

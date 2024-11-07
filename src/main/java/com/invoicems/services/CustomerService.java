@@ -55,7 +55,7 @@ public class CustomerService {
     }
     public void updateCustomerVerification(Customer customer) {
         customer.setVerified(true);
-        customerRepository.save(customer); // Updates the verified status in DB
+        customerRepository.save(customer); 
     }
     //--------------------------------------------------------
     public String generatePasswordResetToken(Customer customer) {
@@ -72,10 +72,10 @@ public class CustomerService {
 
     
     public void updateCustomerPassword(Customer customer) {
-        // Hash the new password
+     
         String hashedPassword = passwordEncoder.encode(customer.getPassword());
-        customer.setPassword(hashedPassword);  // Set the hashed password
-        customerRepository.save(customer);  // Save the customer with the updated password
+        customer.setPassword(hashedPassword); 
+        customerRepository.save(customer);  
     }
 
 }

@@ -85,11 +85,11 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         try {
-            helper.setFrom("shreshthinalawade555@gmail.com", senderName); // Sender email and name
-            helper.setTo(email); // Recipient email
-            helper.setSubject(subject); // Email subject
-            helper.setText(mailContent, true); // Email content (HTML format)
-            mailSender.send(message); // Send the email
+            helper.setFrom("shreshthinalawade555@gmail.com", senderName); 
+            helper.setTo(email); 
+            helper.setSubject(subject); 
+            helper.setText(mailContent, true); 
+            mailSender.send(message);
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
