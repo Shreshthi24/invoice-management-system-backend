@@ -35,6 +35,7 @@ public class CustomerController {
             return "Invalid OTP.";
         }
     }
+//----------------------------------------------------------    
     @PostMapping("/verifyOtp")
     public ResponseEntity<String> verifyOtp(@RequestBody Map<String, String> otpRequest) {
         String otp = otpRequest.get("otp");
@@ -81,7 +82,38 @@ public class CustomerController {
             return ResponseEntity.status(401).body("Invalid credentials or email not verified.");
         }
     }
+//-----------------------------------------------------------------------------
+    // Forgot pass
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        Optional<Customer> customer = customerService.findByEmail(email);
 
+        if (customer.isPresent()) {
+            String resetToken = customerService.generatePasswordResetToken(customer.get()); 
+            emailService.sendPasswordResetEmail(customer.get().getEmail(), resetToken); 
+            return ResponseEntity.ok("Password reset email sent.");
+        } else {
+            return ResponseEntity.status(404).body("Customer not found.");
+        }
+    }
+
+//--------------------------------Reset password - using token
+    @PostMapping("/resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetRequest) {
+        String token = resetRequest.get("passwordResetToken");
+        String newPassword = resetRequest.get("newPassword");
+
+        Optional<Customer> customer = customerService.findByPasswordResetToken(token);
+
+        if (customer.isPresent()) {
+            customer.get().setPassword(newPassword); // Set new password
+            customerService.updateCustomerPassword(customer.get()); // Hash and save the password
+            return ResponseEntity.ok("Password successfully reset.");
+        } else {
+            return ResponseEntity.status(400).body("Invalid or expired reset token.");
+        }
+    }
 
     
     

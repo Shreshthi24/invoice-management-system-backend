@@ -9,6 +9,7 @@ import com.invoicems.repositories.CustomerRepository;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CustomerService {
@@ -56,4 +57,25 @@ public class CustomerService {
         customer.setVerified(true);
         customerRepository.save(customer); // Updates the verified status in DB
     }
+    //--------------------------------------------------------
+    public String generatePasswordResetToken(Customer customer) {
+       
+        String token = UUID.randomUUID().toString();
+        customer.setPasswordResetToken(token);
+        customerRepository.save(customer); 
+        return token;
+    }
+
+    public Optional<Customer> findByPasswordResetToken(String token) {
+        return customerRepository.findByPasswordResetToken(token);
+    }
+
+    
+    public void updateCustomerPassword(Customer customer) {
+        // Hash the new password
+        String hashedPassword = passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(hashedPassword);  // Set the hashed password
+        customerRepository.save(customer);  // Save the customer with the updated password
+    }
+
 }

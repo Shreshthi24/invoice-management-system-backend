@@ -24,8 +24,16 @@ public class Customer {
     private LocalDate createdOn;
     private boolean verified;
     private String verificationOtp;
+ 
+    private String passwordResetToken;
 
        
+	public String getPasswordResetToken() {
+		return passwordResetToken;
+	}
+	public void setPasswordResetToken(String passwordResetToken) {
+		this.passwordResetToken = passwordResetToken;
+	}
 	public Long getCustomer_id() {
 		return customer_id;
 	}

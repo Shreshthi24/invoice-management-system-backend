@@ -11,7 +11,7 @@ public class ShippingAddress {
 	private String ship_companyName;
 	private String ship_gstin;
 	
-	public ShippingAddress() {
+	public ShippingAddress() { 
 		// TODO Auto-generated constructor stub
 	}
 
