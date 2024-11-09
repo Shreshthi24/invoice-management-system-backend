@@ -21,7 +21,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .requestMatchers("/signup", "/verify","/login","/verifyOtp","/forgotPassword","/resetPassword","/vendors/**","/items/**").permitAll()  
+            .requestMatchers("/signup", "/verify","/login",
+            "/verifyOtp","/forgotPassword","/resetPassword","/vendors/**",
+            "/items/**","/invoices/**").permitAll()  
             .anyRequest().authenticated()  
             .and()
           
@@ -29,20 +31,28 @@ public class SecurityConfig {
         
         return http.build();
     }
-    
-    
-    @Bean
+        
+  /*  @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")  // Allow CORS for all paths
-                        .allowedOrigins("http://localhost:55952")  // Specify your React frontend URL
+                        .allowedOrigins("http://localhost:3000")  // Specify your React frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };
+    }*/
+    
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Allow CORS for all endpoints
+                .allowedOrigins("http://localhost:3000")  // React frontend URL
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")  // Allowed HTTP methods
+                .allowedHeaders("*")  // Allow all headers
+                .allowCredentials(true)  // Allow credentials (cookies, authorization headers)
+                .maxAge(3600);  // Max age for pre-flight requests in seconds
     }
 
 }

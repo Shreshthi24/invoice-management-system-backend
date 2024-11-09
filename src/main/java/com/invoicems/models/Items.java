@@ -45,7 +45,23 @@ public class Items {
    @JsonIgnore
    private Customer customer;
    
-   public Customer getCustomer() {
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id")
+   @JsonIgnore
+   private Invoice invoice;
+   
+   
+     
+   
+   public Invoice getInvoice() {
+	return invoice;
+}
+
+public void setInvoice(Invoice invoice) {
+	this.invoice = invoice;
+}
+
+public Customer getCustomer() {
 	return customer;
 }
 

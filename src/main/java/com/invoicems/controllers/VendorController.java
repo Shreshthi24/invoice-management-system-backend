@@ -13,7 +13,7 @@ import com.invoicems.services.VendorService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:55952")
+//@CrossOrigin(origins = "http://localhost:55952")
 @RequestMapping("/vendors")
 public class VendorController {
 
