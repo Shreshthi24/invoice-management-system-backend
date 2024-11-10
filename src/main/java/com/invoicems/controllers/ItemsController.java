@@ -63,7 +63,7 @@ public class ItemsController {
         }
     }
 //--------------------------------------------------------------------
-    // Delete item by itemName
+    /*Delete item by itemName
     @DeleteMapping("/{itemName}")
     public ResponseEntity<String> deleteItem(@PathVariable String itemName) {
         Optional<Items> item = itemsService.getItemByName(itemName);
@@ -73,5 +73,30 @@ public class ItemsController {
         } else {
             return ResponseEntity.status(404).body("Item not found");
         }
+    }*/
+    
+    // Soft-delete an item by name
+    @DeleteMapping("/softDelete/{itemName}")
+    public ResponseEntity<String> softDeleteItem(@PathVariable String itemName) {
+        Optional<Items> item = itemsService.getItemByName(itemName);
+        if (item.isPresent()) {
+            itemsService.softDeleteItem(itemName);
+            return ResponseEntity.ok("Item soft-deleted successfully!");
+        } else {
+            return ResponseEntity.status(404).body("Item not found");
+        }
+    }
+
+    // Get all soft-deleted items (for admin access)
+    @GetMapping("/getSoftDeleted")
+    public ResponseEntity<List<Items>> getAllSoftDeletedItems() {
+        List<Items> deletedItems = itemsService.getAllSoftDeletedItems();
+        return ResponseEntity.ok(deletedItems);
+    }
+    
+    @GetMapping("/allItemExceptSoftDeleted")
+    public ResponseEntity<List<Items>> getAllNonDeletedItems() {
+        List<Items> itemsList = itemsService.getAllNonDeletedItems();
+        return new ResponseEntity<>(itemsList, HttpStatus.OK);
     }
 }

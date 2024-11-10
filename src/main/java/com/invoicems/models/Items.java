@@ -39,6 +39,8 @@ public class Items {
    private Float cess2;
    private Float cess3; 
    
+   private boolean deleted = false; 
+   
    // Foreign key 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
@@ -46,134 +48,143 @@ public class Items {
    private Customer customer;
    
    @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id")
+   @JoinColumn(name = "invoice_id", referencedColumnName ="invoice_id")
    @JsonIgnore
    private Invoice invoice;
    
    
-     
-   
+      
    public Invoice getInvoice() {
 	return invoice;
-}
+   }
 
-public void setInvoice(Invoice invoice) {
+   public void setInvoice(Invoice invoice) {
 	this.invoice = invoice;
-}
+   }
 
-public Customer getCustomer() {
+   public Customer getCustomer() {
 	return customer;
-}
+   }
 
-public void setCustomer(Customer customer) {
+   public void setCustomer(Customer customer) {
 	this.customer = customer;
-}
+   }
 
-public void setPercheaseUnitPrice(Float percheaseUnitPrice) {
+   public void setPercheaseUnitPrice(Float percheaseUnitPrice) {
 	this.percheaseUnitPrice = percheaseUnitPrice;
-}
+   }
 
-public Items() {
+   public Items() {
 	// TODO Auto-generated constructor stub
    }
    
-public String getItemName() {
+   public String getItemName() {
 	return itemName;
-}
-public void setItemName(String itemName) {
+   }
+   public void setItemName(String itemName) {
 	this.itemName = itemName;
-}
-public String getDescription() {
+   }
+   public String getDescription() {
 	return description;
-}
-public void setDescription(String description) {
+   }
+   public void setDescription(String description) {
 	this.description = description;
-}
-public Integer getQuantity() {
+   }
+   public Integer getQuantity() {
 	return quantity;
-}
-public void setQuantity(Integer quantity) {
+   }
+   public void setQuantity(Integer quantity) {
 	this.quantity = quantity;
-}
-public String getUnit() {
+   }
+   public String getUnit() {
 	return unit;
-}
-public void setUnit(String unit) {
+   }
+   public void setUnit(String unit) {
 	this.unit = unit;
-}
-public Float getTax() {
+   }
+   public Float getTax() {
 	return tax;
-}
-public void setTax(Float tax) {
+   }
+   public void setTax(Float tax) {
 	this.tax = tax;
-}
-public String getHsn() {
+   }
+   public String getHsn() {
 	return hsn;
-}
-public void setHsn(String hsn) {
+   }
+   public void setHsn(String hsn) {
 	this.hsn = hsn;
-}
-public String getSku() {
+   }
+   public String getSku() {
 	return sku;
-}
-public void setSku(String sku) {
+   }
+   public void setSku(String sku) {
 	this.sku = sku;
-}
-public Float getSaleUnitPrice() {
+   }
+   public Float getSaleUnitPrice() {
 	return saleUnitPrice;
-}
-public void setSaleUnitPrice(Float saleUnitPrice) {
+   }
+   public void setSaleUnitPrice(Float saleUnitPrice) {
 	this.saleUnitPrice = saleUnitPrice;
-}
-public String getSaleCurrency() {
+   }
+   public String getSaleCurrency() {
 	return saleCurrency;
-}
-public void setSaleCurrency(String saleCurrency) {
+   }
+   public void setSaleCurrency(String saleCurrency) {
 	this.saleCurrency = saleCurrency;
-}
-public Float getCess() {
+   }
+   public Float getCess() {
 	return cess;
-}
-public void setCess(Float cess) {
+   }
+   public void setCess(Float cess) {
 	this.cess = cess;
-}
-public Float getCess1() {
+   }
+   public Float getCess1() {
 	return cess1;
-}
-public void setCess1(Float cess1) {
+   }
+   public void setCess1(Float cess1) {
 	this.cess1 = cess1;
-}
-public Float getPercheaseUnitPrice() {
+   }
+   public Float getPercheaseUnitPrice() {
 	return percheaseUnitPrice;
-}
-public void setPercheaseUnitPrise(Float percheaseUnitPrice) {
+   }
+   public void setPercheaseUnitPrise(Float percheaseUnitPrice) {
 	this.percheaseUnitPrice = percheaseUnitPrice;
-}
-public String getPercheaseCurrency() {
+   }
+   public String getPercheaseCurrency() {
 	return percheaseCurrency;
-}
-public void setPercheaseCurrency(String percheaseCurrency) {
+   }
+   public void setPercheaseCurrency(String percheaseCurrency) {
 	this.percheaseCurrency = percheaseCurrency;
-}
-public Float getCess2() {
+   }
+   public Float getCess2() {
 	return cess2;
-}
-public void setCess2(Float cess2) {
+   }
+   public void setCess2(Float cess2) {
 	this.cess2 = cess2;
-}
-public Float getCess3() {
+   }
+   public Float getCess3() {
 	return cess3;
-}
-public void setCess3(Float cess3) {
+   }
+   public void setCess3(Float cess3) {
 	this.cess3 = cess3;
-}
+   }
+	
+   public boolean deleted() {
+	return deleted;
+   }
+
+   public void setDeleted(boolean deleted) {
+	this.deleted = deleted;
+   }
+
 @Override
 public String toString() {
 	return "Items [itemName=" + itemName + ", description=" + description + ", quantity=" + quantity + ", unit=" + unit
-			+ ", tax=" + tax + ", hsn=" + hsn + ", sku=" + sku + ", saleUnitPrise=" + saleUnitPrice + ", saleCurrency="
-			+ saleCurrency + ", cess=" + cess + ", cess1=" + cess1 + ", percheaseUnitPrise=" + percheaseUnitPrice
-			+ ", percheaseCurrency=" + percheaseCurrency + ", cess2=" + cess2 + ", cess3=" + cess3 + "]";
+			+ ", tax=" + tax + ", hsn=" + hsn + ", sku=" + sku + ", saleUnitPrice=" + saleUnitPrice + ", saleCurrency="
+			+ saleCurrency + ", cess=" + cess + ", cess1=" + cess1 + ", percheaseUnitPrice=" + percheaseUnitPrice
+			+ ", percheaseCurrency=" + percheaseCurrency + ", cess2=" + cess2 + ", cess3=" + cess3  + ", customer=" + customer + ", invoice=" + invoice + "]";
 }
+
    
    
    
