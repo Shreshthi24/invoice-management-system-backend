@@ -15,7 +15,7 @@ public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
-
+  //--------------------------------------------------------------------
     // Get all invoices
     @GetMapping("/all")
     public ResponseEntity<List<Invoice>> getAllInvoices() {
@@ -25,13 +25,14 @@ public class InvoiceController {
         }
         return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
+  //--------------------------------------------------------------------
     @GetMapping("/{id}")
     public ResponseEntity<Object> getInvoiceById(@PathVariable Long id) {
         return invoiceService.getInvoiceById(id)
                 .map(invoice -> ResponseEntity.ok((Object) invoice))  // Invoice found, cast to Object
                 .orElse(new ResponseEntity<>((Object) "Invoice not found with ID " + String.valueOf(id), HttpStatus.NOT_FOUND));  // Invoice not found, safely concatenate
     }
-
+  //--------------------------------------------------------------------
 
     // Create a new invoice
     @PostMapping("/addNew/{customerId}")
@@ -43,7 +44,7 @@ public class InvoiceController {
             return new ResponseEntity<>("Failed to create invoice: " + e.getMessage(), HttpStatus.BAD_REQUEST); // Error during creation
         }
     }
-
+  //--------------------------------------------------------------------
     // Update an existing invoice
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateInvoice(@PathVariable Long id, @RequestBody Invoice invoice) {
@@ -54,7 +55,7 @@ public class InvoiceController {
             return new ResponseEntity<>("Invoice not found with ID " + id, HttpStatus.NOT_FOUND);  // Invoice not found
         }
     }
-
+  //--------------------------------------------------------------------
     // Delete an invoice
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteInvoice(@PathVariable Long id) {

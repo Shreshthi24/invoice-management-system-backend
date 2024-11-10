@@ -7,57 +7,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.invoicems.models.*;
 import com.invoicems.models.Vendor;
 import com.invoicems.services.VendorService;
 
-
 @RestController
-//@CrossOrigin(origins = "http://localhost:55952")
 @RequestMapping("/vendors")
 public class VendorController {
 
     @Autowired
     private VendorService vendorService;
 
-    
-    
+    // Add or update a vendor associated with a specific customer
     @PostMapping("/customer/{customerId}")
-    public ResponseEntity<Vendor> saveOrUpdateVendor(@PathVariable("customerId") Long customerId, @RequestBody Vendor vendor) {
+    public ResponseEntity<String> saveOrUpdateVendor(@PathVariable("customerId") Long customerId, @RequestBody Vendor vendor) {
         try {
             Vendor savedVendor = vendorService.addVendor(customerId, vendor);
-            return new ResponseEntity<>(savedVendor, HttpStatus.CREATED); // Return created vendor with status 201
+            return new ResponseEntity<>("Vendor created successfully with ID: ", HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // If customer not found, return 404
+            return new ResponseEntity<>("Customer with ID " + customerId + " not found.", HttpStatus.NOT_FOUND);
         }
     }
-    
-//--------------------------------------------------------------------
+
+    // Retrieve all vendors
     @GetMapping("/all")
-    public List<Vendor> getAllVendors() {
-        return vendorService.getAllVendors();
+    public ResponseEntity<List<Vendor>> getAllVendors() {
+        List<Vendor> vendors = vendorService.getAllVendors();
+        if (vendors.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);  // No vendors found
+        }
+        return new ResponseEntity<>(vendors, HttpStatus.OK);
     }
-//--------------------------------------------------------------------
+
+    // Retrieve a vendor by company name
     @GetMapping("/{companyName}")
-    public ResponseEntity<Vendor> getVendorById(@PathVariable String companyName) {
+    public ResponseEntity<String> getVendorById(@PathVariable String companyName) {
         Optional<Vendor> vendor = vendorService.getVendorById(companyName);
-        return vendor.map(ResponseEntity::ok)
-                     .orElseGet(() -> ResponseEntity.notFound().build());
+        return vendor.map(value -> new ResponseEntity<>(value.toString(), HttpStatus.OK))
+                     .orElseGet(() -> new ResponseEntity<>("Vendor with company name " + companyName + " not found.", HttpStatus.NOT_FOUND));
     }
-//--------------------------------------------------------------------
+
+    // Update a vendor's details by company name
     @PutMapping("/{companyName}")
-    public ResponseEntity<Vendor> updateVendor(@PathVariable String companyName, @RequestBody Vendor vendorDetails) {
+    public ResponseEntity<String> updateVendor(@PathVariable String companyName, @RequestBody Vendor vendorDetails) {
         Vendor updatedVendor = vendorService.updateVendor(companyName, vendorDetails);
         if (updatedVendor != null) {
-            return ResponseEntity.ok(updatedVendor);
+            return new ResponseEntity<>("Vendor with company name " + companyName + " updated successfully.", HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
-        } 
+            return new ResponseEntity<>("Vendor with company name " + companyName + " not found.", HttpStatus.NOT_FOUND);
+        }
     }
-//--------------------------------------------------------------------
+
+    // Delete a vendor by company name
     @DeleteMapping("/{companyName}")
     public ResponseEntity<String> deleteVendor(@PathVariable String companyName) {
-        vendorService.deleteVendor(companyName);
-        return ResponseEntity.ok("Vendor deleted successfully.");
+        try {
+            vendorService.deleteVendor(companyName);
+            return new ResponseEntity<>("Vendor with company name " + companyName + " deleted successfully.", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Vendor with company name " + companyName + " not found.", HttpStatus.NOT_FOUND);
+        }
     }
 }
