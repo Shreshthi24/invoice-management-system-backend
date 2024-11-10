@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.invoicems.models.Customer;
@@ -19,13 +20,13 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    
+   
     String generateOTP() {
         SecureRandom random = new SecureRandom();
         int otp = 100000 + random.nextInt(900000); 
         return String.valueOf(otp);
     }
-
+    @Async
     public void sendVerificationEmail(Customer customer) {
         String subject = "Email Verification";
         String senderName = "Invoice Management";
