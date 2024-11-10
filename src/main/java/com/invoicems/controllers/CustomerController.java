@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.invoicems.models.Customer;
 import com.invoicems.services.CustomerService;
 import com.invoicems.services.EmailService;
+import com.invoicems.util.JwtUtil;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:3000")
@@ -21,6 +22,9 @@ public class CustomerController {
     
     @Autowired
     private EmailService emailService;
+    
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public String signup(@RequestBody Customer customer) {
@@ -71,7 +75,7 @@ public class CustomerController {
         }
     }*/
 //--------------------------------------------------------------------
-    @PostMapping("/login")
+/*    @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Customer loginRequest) {
         Optional<Customer> customer = customerService.login(loginRequest.getEmail(), loginRequest.getPassword());
         
@@ -80,6 +84,20 @@ public class CustomerController {
             return ResponseEntity.ok("Login successful!");
         } else {
             
+            return ResponseEntity.status(401).body("Invalid credentials or email not verified.");
+        }
+    }*/
+    
+ 
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Customer loginRequest) {
+        Optional<Customer> customer = customerService.login(loginRequest.getEmail(), loginRequest.getPassword());
+
+        if (customer.isPresent()) {
+            String token = jwtUtil.generateToken(loginRequest.getEmail());
+            return ResponseEntity.ok("Login successful! "+"\n"+"Token: " + token);
+        } else {
             return ResponseEntity.status(401).body("Invalid credentials or email not verified.");
         }
     }

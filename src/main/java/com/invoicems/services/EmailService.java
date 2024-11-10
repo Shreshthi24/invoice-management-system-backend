@@ -21,47 +21,42 @@ public class EmailService {
     private JavaMailSender mailSender;
 
    
-    String generateOTP() {
+       String generateOTP() {
         SecureRandom random = new SecureRandom();
         int otp = 100000 + random.nextInt(900000); 
         return String.valueOf(otp);
     }
-    @Async
-    public void sendVerificationEmail(Customer customer) {
-        String subject = "Email Verification";
-        String senderName = "Invoice Management";
+       // Send Verification Email
+       @Async
+       public void sendVerificationEmail(Customer customer) {
+           String subject = "Email Verification";
+           String senderName = "Invoice Management";
+           String otp = customer.getVerificationOtp();  // OTP from the Customer object (already set)
 
-        
-        String otp = generateOTP();
+           String mailContent = "<p>Dear " + customer.getFirstName() + " " + customer.getLastName() + ",</p>";
+           mailContent += "<p>Please use the following OTP to verify your registration:</p>";
+           mailContent += "<h3>" + otp + "</h3>";
+           mailContent += "<p>Thank you!<br>Invoice Management Team</p>";
 
-       
-        customer.setVerificationOtp(otp);
+           System.out.println("Generated OTP: " + otp);
 
-        String mailContent = "<p>Dear " + customer.getFirstName() + " " + customer.getLastName() + ",</p>";
-        mailContent += "<p>Please use the following OTP to verify your registration:</p>";
-        mailContent += "<h3>" + otp + "</h3>";
-        mailContent += "<p>Thank you!<br>Invoice Management Team</p>";
+           MimeMessage message = mailSender.createMimeMessage();
+           MimeMessageHelper helper = new MimeMessageHelper(message);
 
-       
-        System.out.println("Generated OTP: " + otp);
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        try {
-            helper.setFrom("shreshthinalawade555@gmail.com", senderName); 
-            helper.setTo(customer.getEmail());
-            helper.setSubject(subject); 
-            helper.setText(mailContent, true); 
-            mailSender.send(message); 
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-    
+           try {
+               helper.setFrom("shreshthinalawade555@gmail.com", senderName); 
+               helper.setTo(customer.getEmail());
+               helper.setSubject(subject); 
+               helper.setText(mailContent, true); 
+               mailSender.send(message); 
+           } catch (MessagingException | UnsupportedEncodingException e) {
+               e.printStackTrace();
+           }
+       }
     
 
     // Send Password Reset Email with Token
+  //  @Async
     public void sendPasswordResetEmail(String email, String token) {
         String subject = "Password Reset Request";
         String senderName = "Invoice Management";
